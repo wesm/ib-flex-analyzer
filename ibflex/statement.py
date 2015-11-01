@@ -48,6 +48,8 @@ class FlexStatement(object):
                                        'Broker Interest Received',
                                        'Other Fees']]
 
+        self.in_out = clean_in_out(self.cash_transactions)
+
 
 def clean_perf(statement):
     summary = statement.MTDYTDPerformanceSummary
@@ -134,3 +136,11 @@ def total_fees(cash_trans):
     return total_by_type[['Broker Interest Paid',
                           'Broker Interest Received',
                           'Other Fees']]
+
+
+def clean_in_out(cash_trans):
+    inout = cash_trans[cash_trans.type == 'Deposits & Withdrawals']
+
+    return pd.Series([inout.amount[inout.amount > 0].sum(),
+                      inout.amount[inout.amount < 0].sum()],
+                     index=['Deposit', 'Withdrawal'])
