@@ -1,8 +1,11 @@
-from ibflex.statement import rollup_statements
+import glob
+import os
 
-paths = ['2011_comprehensive.xml',
-         '2012_comprehensive.xml',
-         '2013_comprehensive.xml',
-         '2014_comprehensive.xml']
+from ibflex.statement import FlexStatement, rollup_statements
 
-analysis = rollup_statements(paths)
+paths = glob.glob(os.path.expanduser('~/Dropbox/ib_flex_reports/*.xml'))
+
+statements = [FlexStatement(path) for path in paths]
+
+mtm = rollup_statements(statements)
+realized = rollup_statements(statements, 'realized')

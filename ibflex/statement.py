@@ -67,8 +67,8 @@ def get_table(node):
 
 
 def clean_option_perf(perf):
-    perf = perf[perf.assetCategory == 'OPT']
-    perf.expiry = pd.to_datetime(perf.expiry)
+    perf = perf[perf.assetCategory == 'OPT'].copy()
+    perf['expiry'] = pd.to_datetime(perf['expiry'])
     return perf
 
 
@@ -98,9 +98,7 @@ def rollup_option_underlying(options):
     })
 
 
-def rollup_statements(paths, key='mtm_ytd'):
-    statements = [FlexStatement(path) for path in paths]
-
+def rollup_statements(statements, key='mtm_ytd'):
     def clean(x):
         return x.drop('Total', axis=1)
 
