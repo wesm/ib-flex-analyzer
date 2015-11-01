@@ -9,10 +9,8 @@ class FlexStatement(object):
     def __init__(self, path):
         self.path = path
 
-        tree = lxml_objectify.parse(open(path, 'rb'))
-        root = tree.getroot()
-
-        self.statement = stmt = root.FlexStatements.FlexStatement
+        # This is a large object, so I let it be garbage-collected
+        stmt = self.get_lxml_root()
 
         self.perf = clean_perf(stmt)
         self.option_perf = clean_option_perf(self.perf)
@@ -49,6 +47,11 @@ class FlexStatement(object):
                                        'Other Fees']]
 
         self.in_out = clean_in_out(self.cash_transactions)
+
+    def get_lxml_root(self):
+        tree = lxml_objectify.parse(open(self.path, 'rb'))
+        root = tree.getroot()
+        return root.FlexStatements.FlexStatement
 
 
 def clean_perf(statement):
