@@ -1,3 +1,5 @@
+Requires: pandas, lxml
+
 Steps to better understanding your Interactive Brokers account:
 
 1. Create Flex requests that retrieve every available field
